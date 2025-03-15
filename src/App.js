@@ -7,6 +7,7 @@ import ResetPassword from './components/ResetPassword';
 import Home from './components/Home';
 import './App.css';
 import Front from './components/Front';
+import Landing from './components/Landing';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <div className="mobile-viewport">
         <Routes>
           <Route path="/front" element={<Front />} />
+          <Route path="/landing" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

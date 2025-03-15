@@ -251,7 +251,9 @@ const ForgotPassword = () => {
                         border: 'none',
                         marginTop: '20px',
                         fontWeight: 'bold',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        width: '60%',
+                        marginLeft: '20%'
                     }}
                 >
                     Verify OTP

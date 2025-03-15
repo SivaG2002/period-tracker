@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CirlImageAnimation = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Calculate the total time for the last animation to complete
+    // Last letter ('l') has index 3, so delay is 3 * 0.2s = 0.6s, plus 2s animation duration
+    const totalAnimationTime = (3 * 0.2 + 2) * 1000; // 2.6s in milliseconds
+
+    const timer = setTimeout(() => {
+      // Redirect to the next route after the last animation completes
+      navigate('/landing');
+    }, totalAnimationTime);
+
+    // Cleanup the timer on component unmount
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
   return (
     <div className="mobile-viewport">
       <div style={{
@@ -28,7 +45,7 @@ const CirlImageAnimation = () => {
             style={{
               width: '120px',
               height: '295px',
-              filter: 'brightness(70%) contrast(120%)' // Increased contrast for sharpness
+              filter: 'brightness(70%) contrast(120%)'
             }}
           />
         </div>
@@ -64,7 +81,7 @@ const CirlImageAnimation = () => {
                     height: letter === 'i' || letter === 'r' ? '35px' : '55px',
                     transform: letter === 'l' ? 'rotate(-10deg)' : 'none',
                     transformOrigin: letter === 'l' ? 'bottom center' : 'center',
-                    filter: 'brightness(70%) contrast(120%)', // Increased contrast for sharpness
+                    filter: 'brightness(70%) contrast(120%)',
                     position: letter === 'l' ? 'relative' : 'static',
                     top: letter === 'l' ? '-5px' : '0'
                   }}
