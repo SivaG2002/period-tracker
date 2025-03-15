@@ -220,11 +220,35 @@ const SignUp = () => {
 // Forgot Password Component
 const ForgotPassword = () => {
   return (
-    <div className="auth-container">
-      <h2>Forgot Password</h2>
-      <input type="tel" placeholder="Phone Number" className="rounded-input" />
-      <button className="primary-btn">OTP Verification</button>
-    </div>
+    <motion.div 
+      initial={{ opacity: 0}}
+      animate={{ opacity: 1}}
+      exit={{ opacity: 0}}
+      transition={{ duration: 1, ease: "easeInOut" }}
+      style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '20px' }}
+    >
+      <motion.div whileTap={{ scale: 0.97 }}>
+        <Link 
+          to="/login" 
+          className="back-link" 
+          style={{ display: 'block', marginBottom: '20px', color: '#8c588c', fontWeight: 'bold' }}
+        >
+          ⇐ Back to login
+        </Link>
+      </motion.div>
+      
+      <h2 style={{color: '#8c588c', marginBottom: '30px', textAlign: 'center'}}>Forgot Password</h2>
+      
+      <motion.div 
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 20px', flex: 1, justifyContent: 'center' }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.8 }}
+      >
+        <input type="tel" placeholder="Phone Number" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold', marginBottom: '20px', width: '100%' }} />
+        <button className="primary-btn rounded-btn" style={{ borderRadius: '50px', fontWeight: 'bold', fontSize: '19px', width: '70%' }}>Send OTP</button>
+      </motion.div>
+    </motion.div>
   );
 };
 
