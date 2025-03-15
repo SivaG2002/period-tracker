@@ -11,10 +11,10 @@ const Login = () => {
       <h2>LOG IN</h2>
       <input type="tel" placeholder="Phone Number" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold' }} />
       <input type="password" placeholder="Password" className="rounded-input" style={{ borderRadius: '50px' }} />
-      <Link to="/forgot-password" className="link" style={{ textAlign: 'right', color: '#7e3a8d', fontWeight: 'bold', fontSize: '16px', paddingBottom: '15px', paddingTop: '4px' }}>Forgot Password</Link>
+      <Link to="/forgot-password" className="link" style={{ textAlign: 'right', color: '#8c588c', fontWeight: 'bold', fontSize: '16px', paddingBottom: '15px', paddingTop: '4px' }}>Forgot Password</Link>
       <button className="primary-btn rounded-btn" style={{ borderRadius: '50px', fontWeight: 'bold', fontSize: '19px',width:'70%,' }}>LOG IN</button>
       <hr style={{ width: '100%', margin: '28px 0px' }} />
-      <p style={{ color: '#7e3a8d', fontWeight: 'bold', textAlign: 'center' }}>Don't have an Account? </p>
+      <p style={{ color: '#8c588c', fontWeight: 'bold', textAlign: 'center' }}>Don't have an Account? </p>
       <Link to="/signup" className="primary-btn rounded-btn" style={{ borderRadius: '50px', fontWeight: 'bold', fontSize: '19px', width: '60%', marginLeft: '60px', textAlign: 'center', display: 'block', textDecoration: 'none' }}>Sign Up</Link>
     </div>
   );
@@ -22,73 +22,175 @@ const Login = () => {
 
 // SignUp Component
 const SignUp = () => {
+  const [otpValues, setOtpValues] = useState(['', '', '', '']);
+  const otpInputRefs = [
+    React.useRef(null),
+    React.useRef(null),
+    React.useRef(null),
+    React.useRef(null)
+  ];
+  
+  const [notification, setNotification] = useState({ show: false, message: '', isSuccess: false });
+  const dummyPin = '1234'; // Dummy PIN for verification
+  
+  const handleOtpChange = (index, value) => {
+    // Only allow numbers
+    if (value && !/^\d+$/.test(value)) return;
+    
+    const newOtpValues = [...otpValues];
+    
+    // Handle paste with multiple digits
+    if (value.length > 1) {
+      // Get only the first 4 digits from pasted value
+      const digits = value.replace(/\D/g, '').slice(0, 4);
+      
+      // Distribute digits to OTP fields
+      for (let i = 0; i < 4; i++) {
+        newOtpValues[i] = digits[i] || '';
+      }
+      
+      setOtpValues(newOtpValues);
+      
+      // Focus on appropriate field after paste
+      if (digits.length < 4 && digits.length > 0) {
+        otpInputRefs[digits.length].current.focus();
+      } else if (digits.length === 4) {
+        otpInputRefs[3].current.blur(); // Remove focus after complete
+      }
+      return;
+    }
+    
+    newOtpValues[index] = value;
+    setOtpValues(newOtpValues);
+    
+    // Auto focus next input
+    if (value && index < 3) {
+      otpInputRefs[index + 1].current.focus();
+    }
+  };
+  
+  const handleKeyDown = (index, e) => {
+    // Handle backspace to go to previous input
+    if (e.key === 'Backspace') {
+      if (index > 0 && otpValues[index] === '') {
+        // If current field is empty, move to previous field and clear it
+        const newOtpValues = [...otpValues];
+        newOtpValues[index - 1] = '';
+        setOtpValues(newOtpValues);
+        otpInputRefs[index - 1].current.focus();
+      } else if (otpValues[index] !== '') {
+        // If current field has value, just clear it (default behavior)
+        const newOtpValues = [...otpValues];
+        newOtpValues[index] = '';
+        setOtpValues(newOtpValues);
+      }
+    }
+  };
+  
+  // Combined OTP value
+  const otpCode = otpValues.join('');
+  
+  const showNotification = (message, isSuccess) => {
+    setNotification({ show: true, message, isSuccess });
+    setTimeout(() => {
+      setNotification({ show: false, message: '', isSuccess: false });
+    }, 3000);
+  };
+  
+  const verifyOtp = () => {
+    if (otpCode === dummyPin) {
+      showNotification('Successful ✓', true);
+    } else {
+      showNotification('Enter valid code', false);
+    }
+  };
+  
   return (
     <div className="auth-container">
-      <Link to="/login" className="back-link" style={{ display: 'block', marginBottom: '10px', color: '#7e3a8d', fontWeight: 'bold' }}>⇐ Back to login</Link>
-      <h2>SIGN UP</h2>
-      <input type="tel" placeholder="Phone Number" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold' }} />
-      <h4 className='phonenumber' style={{color: '#7e3a8d',textAlign:'center'}}>Check Your Phone</h4>
+      {notification.show && (
+        <div style={{
+          position: 'fixed',
+          top: '20px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          backgroundColor: notification.isSuccess ? '#4CAF50' : '#FF5252',
+          color: 'white',
+          padding: '10px 20px',
+          borderRadius: '20px',
+          zIndex: 1000,
+          boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+          animation: 'fadeIn 0.3s'
+        }}>
+          {notification.message}
+        </div>
+      )}
+      <Link to="/login" className="back-link" style={{ display: 'block', marginBottom: '10px', color: '#8c588c', fontWeight: 'bold' }}>⇐ Back to login</Link>
+      <h2 className="sign_up_h2" style={{height:'1%', marginBottom:'8%', color:'#8c588c'}}>SIGN UP</h2>
+      <input type="tel" placeholder="Phone Number" className="rounded-input-ph" style={{ borderRadius: '50px', fontWeight: 'bold',marginBottom:'-10px' }} />
+      <h4 className='phonenumber' style={{color: '#8c588c',textAlign:'center',display:'flow',height:'1%'}}>Check Your Phone</h4>
       <div
         className="otp-container"
         style={{
           display: 'flex',
           gap: '4px',
           marginBottom: '8px',
+          marginTop: '1px',
         }}
       >
-        <input
-          type="text"
-          maxLength="1"
-          className="otp-input"
-          style={{
-            width: '6%',
-            textAlign: 'center',
-            borderRadius: '10px',
-            fontWeight: 'bold',
-            border: '1px solid #7e3a8d',
-            marginLeft: '64px',
-          }}
-        />
-        <input
-          type="text"
-          maxLength="1"
-          className="otp-input"
-          style={{
-            width: '6%',
-            textAlign: 'center',
-            borderRadius: '10px',
-            fontWeight: 'bold',
-            border: '1px solid #7e3a8d',
-          }}
-        />
-        <input
-          type="text"
-          maxLength="1"
-          className="otp-input"
-          style={{
-            width: '6%',
-            textAlign: 'center',
-            borderRadius: '10px',
-            fontWeight: 'bold',
-            border: '1px solid #7e3a8d',
-          }}
-        />
-        <input
-          type="text"
-          maxLength="1"
-          className="otp-input"
-          style={{
-            width: '6%',
-            textAlign: 'center',
-            borderRadius: '10px',
-            fontWeight: 'bold',
-            border: '1px solid #7e3a8d',
-          }}
-        />
+        {otpValues.map((value, index) => (
+          <input
+            key={index}
+            ref={otpInputRefs[index]}
+            type="text"
+            maxLength="1"
+            value={value}
+            onChange={(e) => handleOtpChange(index, e.target.value)}
+            onKeyDown={(e) => handleKeyDown(index, e)}
+            onPaste={(e) => {
+              e.preventDefault();
+              const pastedData = e.clipboardData.getData('text');
+              handleOtpChange(index, pastedData);
+            }}
+            className="otp-input"
+            style={{
+              width: '6%',
+              textAlign: 'center',
+              borderRadius: '10px',
+              fontWeight: 'bold',
+              border: '1px solid #8c588c',
+              marginLeft: index === 0 ? '64px' : '0',
+              background: '#f5ebf6',
+            }}
+          />
+        ))}
       </div>
+      <button 
+          className="primary-btn" 
+          style={{ 
+            borderRadius: '50px', 
+            fontWeight: 'bold', 
+            fontSize: '18px', 
+            width: '20%', 
+            marginLeft: '38%', 
+            textAlign: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: 'auto',
+            padding: '8px 0',
+            textDecoration: 'none',
+            height:'4%',
+            color:'#8c588c',
+            background:'white',
+            border: '1px solid #8c588c',
+            cursor: 'grab'
+          }} 
+          onClick={verifyOtp}>
+        Verify
+      </button>
       <input type="password" placeholder="Password" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold' }} />
       <input type="password" placeholder="Confirm Password" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold' }} />
-      <button className="primary-btn">SIGN UP</button>
+      <Link to="/signup" className="primary-btn rounded-btn" style={{ borderRadius: '50px', fontWeight: 'bold', fontSize: '19px', width: '60%', marginLeft: '55px', textAlign: 'center', display: 'block', textDecoration: 'none' }}>Sign Up</Link>
     </div>
   );
 };

@@ -1,17 +1,18 @@
 /* Mobile viewport styling */
 .mobile-viewport {
   width: 375px;
-  height: 667px;
+  height: 696px;
   margin: 0 auto;
-  background-color: #f0b9e7; /* Light pink background */
+  background-color: #ffd4fc; /* Light pink background */
   border-radius: 20px;
-  overflow-y: auto;
-  display: flex; /* Use flexbox for centering */
+  overflow: hidden; /* Changed from overflow-y: auto to prevent scrolling */
+ 
   flex-direction: column;
-  justify-content: center; /* Center vertically */
-  align-items: center; /* Center horizontally */
+  justify-content: flex-start;
+  align-items: center;
   font-family: Arial, sans-serif;
   color: #333333;
+  position: relative;
 }
 
 /* Auth Container */
@@ -21,16 +22,12 @@
   flex-direction: column;
   gap: 15px;
   padding: 20px;
-  background-color: #edddee; /* Updated background color from your code */
-  width: 90%; /* Responsive width */
-  max-width: 340px; /* Max width to fit mobile viewport */
-  position: absolute;
-  top: 25%; /* Start from middle */
-  bottom: 0; /* Extend to bottom */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Adjust horizontal centering */
-  margin-bottom: 0; /* Remove margin-bottom to stick to bottom */
-  justify-content: flex-start; /* Content starts from top of container */
+  background-color: #f5ebf6;
+  width: 335px;
+  max-width: 340px;
+  margin-top: 140px;
+  justify-content: flex-start;
+  height: 560px;
 }
 
 .rounded-input{
@@ -49,7 +46,7 @@
 .auth-container h2 {
   text-align: left;
   color: #540871;
-  margin-bottom: 20px;
+  margin-bottom: 1px;
   margin-left: 10px;
   font-size: 28px;
 }
@@ -64,7 +61,7 @@
 /* Buttons */
 .primary-btn {
   padding: 12px;
-  background-color: #7e3a8d;
+  background-color: #8c588c;
   color: white;
   border: none;
   border-radius: 8px;
