@@ -3,11 +3,18 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './App.css';
+import { motion } from 'framer-motion'; // Import framer-motion for animations
 
 // Login Component
 const Login = () => {
   return (
-    <div className="auth-container centered">
+    <motion.div 
+      className="auth-container centered"
+      initial={{ x: 400 }} // Start from right side
+      animate={{ x: 0 }} // Animate to center
+      exit={{ x: -400 }} // Exit to left
+      transition={{ duration: 1, ease: "easeInOut" }}
+    >
       <h2>LOG IN</h2>
       <input type="tel" placeholder="Phone Number" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold' }} />
       <input type="password" placeholder="Password" className="rounded-input" style={{ borderRadius: '50px' }} />
@@ -16,7 +23,7 @@ const Login = () => {
       <hr style={{ width: '100%', margin: '28px 0px' }} />
       <p style={{ color: '#8c588c', fontWeight: 'bold', textAlign: 'center' }}>Don't have an Account? </p>
       <Link to="/signup" className="primary-btn rounded-btn" style={{ borderRadius: '50px', fontWeight: 'bold', fontSize: '19px', width: '60%', marginLeft: '60px', textAlign: 'center', display: 'block', textDecoration: 'none' }}>Sign Up</Link>
-    </div>
+    </motion.div>
   );
 };
 
@@ -106,7 +113,13 @@ const SignUp = () => {
   };
   
   return (
-    <div className="auth-container">
+    <motion.div 
+      className="auth-container"
+      initial={{ x: 400 }}
+      animate={{ x: 0 }}
+      exit={{ x: -400 }}
+      transition={{ duration: 1, ease: "easeInOut", stiffness: 300 }}
+    >
       {notification.show && (
         <div style={{
           position: 'fixed',
@@ -124,7 +137,15 @@ const SignUp = () => {
           {notification.message}
         </div>
       )}
-      <Link to="/login" className="back-link" style={{ display: 'block', marginBottom: '10px', color: '#8c588c', fontWeight: 'bold' }}>⇐ Back to login</Link>
+      <motion.div whileTap={{ scale: 0.97 }}>
+        <Link 
+          to="/login" 
+          className="back-link" 
+          style={{ display: 'block', marginBottom: '10px', color: '#8c588c', fontWeight: 'bold' }}
+        >
+          ⇐ Back to login
+        </Link>
+      </motion.div>
       <h2 className="sign_up_h2" style={{height:'1%', marginBottom:'8%', color:'#8c588c'}}>SIGN UP</h2>
       <input type="tel" placeholder="Phone Number" className="rounded-input-ph" style={{ borderRadius: '50px', fontWeight: 'bold',marginBottom:'-10px' }} />
       <h4 className='phonenumber' style={{color: '#8c588c',textAlign:'center',display:'flow',height:'1%'}}>Check Your Phone</h4>
@@ -191,7 +212,7 @@ const SignUp = () => {
       <input type="password" placeholder="Password" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold' }} />
       <input type="password" placeholder="Confirm Password" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold' }} />
       <Link to="/signup" className="primary-btn rounded-btn" style={{ borderRadius: '50px', fontWeight: 'bold', fontSize: '19px', width: '60%', marginLeft: '55px', textAlign: 'center', display: 'block', textDecoration: 'none' }}>Sign Up</Link>
-    </div>
+    </motion.div>
   );
 };
 
