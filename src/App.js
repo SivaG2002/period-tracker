@@ -107,11 +107,12 @@ const Login = () => {
     </motion.div>
   );
 };
-
 // SignUp Component
 const SignUp = () => {
-  const [otpValues, setOtpValues] = useState(['', '', '', '']);
+  const [otpValues, setOtpValues] = useState(['', '', '', '', '', '']);
   const otpInputRefs = [
+    React.useRef(null),
+    React.useRef(null),
     React.useRef(null),
     React.useRef(null),
     React.useRef(null),
@@ -119,7 +120,7 @@ const SignUp = () => {
   ];
   
   const [notification, setNotification] = useState({ show: false, message: '', isSuccess: false });
-  const dummyPin = '1234'; // Dummy PIN for verification
+  const dummyPin = '123456'; // Dummy PIN for verification
   
   const handleOtpChange = (index, value) => {
     // Only allow numbers
@@ -129,21 +130,21 @@ const SignUp = () => {
     
     // Handle paste with multiple digits
     if (value.length > 1) {
-      // Get only the first 4 digits from pasted value
-      const digits = value.replace(/\D/g, '').slice(0, 4);
+      // Get only the first 6 digits from pasted value
+      const digits = value.replace(/\D/g, '').slice(0, 6);
       
       // Distribute digits to OTP fields
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 6; i++) {
         newOtpValues[i] = digits[i] || '';
       }
       
       setOtpValues(newOtpValues);
       
       // Focus on appropriate field after paste
-      if (digits.length < 4 && digits.length > 0) {
+      if (digits.length < 6 && digits.length > 0) {
         otpInputRefs[digits.length].current.focus();
-      } else if (digits.length === 4) {
-        otpInputRefs[3].current.blur(); // Remove focus after complete
+      } else if (digits.length === 6) {
+        otpInputRefs[5].current.blur(); // Remove focus after complete
       }
       return;
     }
@@ -152,7 +153,7 @@ const SignUp = () => {
     setOtpValues(newOtpValues);
     
     // Auto focus next input
-    if (value && index < 3) {
+    if (value && index < 5) {
       otpInputRefs[index + 1].current.focus();
     }
   };
@@ -237,6 +238,7 @@ const SignUp = () => {
           gap: '4px',
           marginBottom: '8px',
           marginTop: '1px',
+          justifyContent: 'center'
         }}
       >
         {otpValues.map((value, index) => (
@@ -255,13 +257,12 @@ const SignUp = () => {
             }}
             className="otp-input"
             style={{
-              width: '6%',
+              width: '10%',
               textAlign: 'center',
               borderRadius: '10px',
               fontWeight: 'bold',
               border: '1px solid #8c588c',
               borderWidth: '2px',
-              marginLeft: index === 0 ? '64px' : '0',
               background: '#f5ebf6',
             }}
           />
@@ -286,7 +287,7 @@ const SignUp = () => {
             color:'#8c588c',
             background:'white',
             border: '1px solid #8c588c',
-            cursor: 'grab'
+            cursor: 'pointer'
           }} 
           onClick={verifyOtp}>
         Verify
