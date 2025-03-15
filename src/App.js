@@ -179,6 +179,7 @@ const SignUp = () => {
               borderRadius: '10px',
               fontWeight: 'bold',
               border: '1px solid #8c588c',
+              borderWidth: '2px',
               marginLeft: index === 0 ? '64px' : '0',
               background: '#f5ebf6',
             }}
