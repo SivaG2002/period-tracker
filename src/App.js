@@ -229,7 +229,34 @@ const SignUp = () => {
         </Link>
       </motion.div>
       <h2 className="sign_up_h2" style={{height:'1%', marginBottom:'8%', color:'#8c588c'}}>SIGN UP</h2>
-      <input type="tel" placeholder="Phone Number" className="rounded-input-ph" style={{ borderRadius: '50px', fontWeight: 'bold',marginBottom:'-10px' }} />
+      <div style={{ position: 'relative', marginBottom: '-10px' }}>
+        <input type="tel" placeholder="Phone Number" className="rounded-input-ph" style={{ 
+          borderRadius: '50px', 
+          fontWeight: 'bold',
+          paddingRight: '40px', // Make room for the button
+          width: 'calc(100% - 40px)' 
+        }} />
+        <button 
+          style={{
+            position: 'absolute',
+            right: '1x',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: '#8c588c',
+            color: 'white',
+            borderRadius: '50%',
+            width: '30px',
+            height: '30px',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer'
+          }}
+        >
+          →
+        </button>
+      </div>
       <h4 className='phonenumber' style={{color: '#8c588c',textAlign:'center',display:'flow',height:'1%'}}>Check Your Phone</h4>
       <div
         className="otp-container"
