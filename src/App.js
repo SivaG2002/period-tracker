@@ -239,7 +239,7 @@ const SignUp = () => {
         <button 
           style={{
             position: 'absolute',
-            right: '1x',
+            right: '1px',
             top: '50%',
             transform: 'translateY(-50%)',
             background: '#8c588c',
@@ -334,28 +334,50 @@ const ForgotPassword = () => {
       animate={{ opacity: 1}}
       exit={{ opacity: 0}}
       transition={{ duration: 1, ease: "easeInOut" }}
-      style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '20px' }}
+      style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
       <motion.div whileTap={{ scale: 0.97 }}>
-        <Link 
-          to="/login" 
-          className="back-link" 
-          style={{ display: 'block', marginBottom: '20px', color: '#8c588c', fontWeight: 'bold' }}
-        >
-          ⇐ Back to login
-        </Link>
       </motion.div>
       
-      <h2 style={{color: '#8c588c', marginBottom: '30px', textAlign: 'center'}}>Forgot Password</h2>
+      <h2 style={{ color: '#8c588c', marginBottom: '30px', textAlign: 'center', fontFamily: "'Delm Medium', sans-serif",fontSize:'30px',fontWeight:'bolder', }}>
+  Forgot Password
+</h2>
       
+                                        
+                                        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                                          <img 
+                                            src={process.env.PUBLIC_URL + '/sad.png'} 
+                                            alt="Sad emoji" 
+                                            style={{ 
+                                          width: '180px', 
+                                          height: '180px',
+                                          objectFit: 'contain',
+                                          background:'#8c588c',
+                                          borderRadius:'50%',
+                                          
+                                          
+                                            }}
+                                          />
+                                        </div>
       <motion.div 
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 20px', flex: 1, justifyContent: 'center' }}
+        style={{ display: 'flex', flexDirection: 'column', padding: '0 20px', flex: 1 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.8 }}
       >
-        <input type="tel" placeholder="Phone Number" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold', marginBottom: '20px', width: '100%' }} />
-        <button className="primary-btn rounded-btn" style={{ borderRadius: '50px', fontWeight: 'bold', fontSize: '19px', width: '70%' }}>Send OTP</button>
+                                                                          <p style={{ 
+                                                                            color: '#8c588c', 
+                                                                            textAlign: 'left', 
+                                                                            fontWeight: 'bold', 
+                                                                            marginBottom: '15px',
+                                                                            marginLeft: '5px',
+                                                                            fontSize: '16px' 
+                                                                          }}>
+                                                                            Enter your phone number
+                                                                          </p>
+
+        <input type="tel" placeholder="Phone Number" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold', marginBottom: '20px', width: '90%' }} />
+       <hr style={{ width: '100%', margin: '28px 0px' }} />
       </motion.div>
     </motion.div>
   );
