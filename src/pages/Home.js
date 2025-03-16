@@ -85,6 +85,7 @@ const SectionHeader = styled.h3`
   font-size: 18px;
   font-weight: bold;
   text-align: center;
+  margin-top: ${props => props.purple ? '0' : '40px'};
   margin-bottom: ${props => props.purple ? '10px' : '15px'};
   font-family: 'Delm Medium', sans-serif;
 `;
@@ -214,10 +215,22 @@ const Home = () => {
                   : null;
               }}
             />
+        
           </CalendarContainer>
+          
 
-          <SectionHeader>YOUR DAILY INSIGHTS</SectionHeader>
-
+          <SectionHeader>Your Daily Insights</SectionHeader>
+          <div 
+          style={{
+            width: '100%',
+            height: '2px',
+            backgroundColor: '#8c588c',
+            opacity: 0.6,
+            borderRadius: '1px',
+            marginTop: '5px',
+            marginBottom: '30px'
+          }}
+        />
           <InsightsContainer>
             <InsightCard>
               <InsightLabel>Cycle Day</InsightLabel>
