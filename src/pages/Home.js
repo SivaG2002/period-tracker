@@ -3,9 +3,9 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import './Home.css'; // Import custom CSS for calendar styling
+import './Home.css';
 
-// Styled Components
+// Styled Components remain the same until InsightCard
 const MobileViewport = styled.div`
   height: 100%;
 `;
@@ -45,9 +45,7 @@ const CalendarContainer = styled.div`
   padding: 25px 25px 0 25px;
   margin-bottom: 20px;
   border: 2px solid #8c588c;
-  // box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   
-  /* Add these styles to reduce tile size */
   .react-calendar {
     position:relative;
     width:100%;
@@ -62,18 +60,18 @@ const CalendarContainer = styled.div`
     font-size: 0.9em;
     border:none;
   }
-.react-calendar__tile {
-  border-radius: 50px;
-  background: none !important;
-}
+  .react-calendar__tile {
+    border-radius: 50px;
+    background: none !important;
+  }
 
-.react-calendar__tile:enabled:hover,
-.react-calendar__tile:enabled:focus,
-.react-calendar__tile--active {
-  background-color: #8c588c !important;
-  color: white;
-  border-radius: 50px;
-}
+  .react-calendar__tile:enabled:hover,
+  .react-calendar__tile:enabled:focus,
+  .react-calendar__tile--active {
+    background-color: #8c588c !important;
+    color: white;
+    border-radius: 50px;
+  }
   
   .react-calendar__month-view__days__day {
     abbr {
@@ -83,7 +81,6 @@ const CalendarContainer = styled.div`
 `;
 
 const SectionHeader = styled.h3`
-
   color: ${props => props.purple ? '#8c588c' : '#000000'};
   font-size: 18px;
   font-weight: bold;
@@ -94,8 +91,18 @@ const SectionHeader = styled.h3`
 
 const InsightsContainer = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   margin-bottom: 30px;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background:rgba(140, 88, 140, 0);
+    border-radius: 4px;
+  }
 `;
 
 const InsightCard = styled.div`
@@ -108,6 +115,8 @@ const InsightCard = styled.div`
   text-align: left;
   border: 2px solid #8c588c;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+  margin-right: 10px;
 `;
 
 const InsightLabel = styled.p`
@@ -126,12 +135,20 @@ const InsightValue = styled.p`
   white-space: nowrap;
 `;
 
+const AddInfoButton = styled(InsightCard)`
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 const InsightValueForInfo = styled.p`
   color: ${props => props.purple ? '#8c588c' : '#fff'};
   font-size: 24px;
   text-align: center;
   white-space: nowrap;
-  margin-top: -0.1vh;
+  margin: 0;
 `;
 
 const NavigationBar = styled.div`
@@ -153,10 +170,19 @@ const NavIcon = styled.img`
 
 const Home = () => {
   const [date, setDate] = useState(new Date(2025, 2, 13));
-  const userName = "Advika"; // Replace with dynamic profile data in a real app
+  const [symptomCards, setSymptomCards] = useState([]);
+  const userName = "Advika";
 
-  // Dynamic greeting based on userName
   const greeting = userName ? `Good Morning, ${userName}!` : "Good Morning!";
+
+  const handleAddInfoClick = () => {
+    setSymptomCards([...symptomCards, (
+      <InsightCard key={symptomCards.length}>
+        <InsightLabel>Symptoms</InsightLabel>
+        <InsightValue>😊😊</InsightValue>
+      </InsightCard>
+    )]);
+  };
 
   return (
     <MobileViewport className="mobile-viewport">
@@ -166,16 +192,13 @@ const Home = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 1, ease: "easeInOut" }}
       >
-        {/* Main Content */}
         <ContentArea>
-          {/* Greeting */}
           <Greeting>{greeting}</Greeting>
 
-          {/* Calendar Section */}
-          <CalendarContainer >
+          <CalendarContainer>
             <SectionHeader purple>CALENDAR-MARCH</SectionHeader>
             <Calendar
-            className="calendar"
+              className="calendar"
               value={date}
               onChange={setDate}
               defaultView="month"
@@ -193,37 +216,33 @@ const Home = () => {
             />
           </CalendarContainer>
 
-          {/* Daily Insights Section */}
           <SectionHeader>YOUR DAILY INSIGHTS</SectionHeader>
 
           <InsightsContainer>
-            {/* Cycle Day */}
             <InsightCard>
               <InsightLabel>Cycle Day</InsightLabel>
               <InsightValue>18</InsightValue>
             </InsightCard>
 
-            {/* Ovulation */}
             <InsightCard>
               <InsightLabel>Ovulation</InsightLabel>
               <InsightValue>03</InsightValue>
             </InsightCard>
 
-            {/* Symptoms */}
             <InsightCard>
               <InsightLabel>Symptoms</InsightLabel>
               <InsightValue>😊😊</InsightValue>
             </InsightCard>
 
-            {/* Add Info */}
-            <InsightCard>
-              <InsightLabel>Add Info </InsightLabel>
+            {symptomCards}
+
+            <AddInfoButton onClick={handleAddInfoClick}>
+              <InsightLabel>Add Info</InsightLabel>
               <InsightValueForInfo>⊕</InsightValueForInfo>
-            </InsightCard>
+            </AddInfoButton>
           </InsightsContainer>
         </ContentArea>
 
-        {/* Navigation Bar at Bottom */}
         <NavigationBar>
           <NavIcon 
             src={process.env.PUBLIC_URL + '/home.png'} 
