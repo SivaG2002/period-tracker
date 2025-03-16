@@ -119,8 +119,8 @@ const PhotoEditIcon = styled.img`
   height: 5vw;
   cursor: grab;
   position: absolute;
-  top: -10%; /* Moved outside the top */
-  right: -15%; /* Moved outside the right */
+  top: 4%; /* Moved outside the top */
+  right: 33%; /* Moved outside the right */
 `;
 const MainEditIcon = styled.img`
   width: 5vw;
@@ -232,15 +232,17 @@ const Profile = () => {
         transition={pageTransition}
       >
         <ContentArea>
-          <PhotoFrame>
-            <ProfilePhoto src={profileData.photo} alt="Profile" />
-            {isEditing && (
-              <>
-                <PhotoEditIcon 
+        <PhotoEditIcon 
                   src={process.env.PUBLIC_URL + '/pen.png'} 
                   alt="Edit Photo" 
                   onClick={() => document.getElementById('photoInput').click()}
                 />
+          <PhotoFrame>
+         
+            <ProfilePhoto src={profileData.photo} alt="Profile" />
+            {isEditing && (
+              <>
+              
                 <input
                   type="file"
                   id="photoInput"
