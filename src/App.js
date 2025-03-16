@@ -1,18 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import SignUp from './components/SignUp';
-import ForgotPassword from './components/ForgotPassword';
-import ResetPassword from './components/ResetPassword';
-import Home from './components/Home';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import Home from './pages/Home';
 import './App.css';
-import Front from './components/Front';
-import Landing from './components/Landing';
+import Front from './pages/Front';
+import Landing from './pages/Landing';
 
 function App() {
   return (
     <Router>
-      <div className="mobile-viewport">
+      <div className="mobile-viewport"> 
         <Routes>
           <Route path="/front" element={<Front />} />
           <Route path="/landing" element={<Landing />} />

@@ -34,8 +34,10 @@
   
   .react-calendar__tile {
     color: #000000;
-    font-size: 14px;
-    padding: 10px;
+    font-size: 0.9em;
+    padding: 0.5em 0.1em;
+    height: 2.5em;
+    width: 2.5em;
     background: #f5ebfb;
     border-radius: 50%;
     margin: 2px;
@@ -66,4 +68,25 @@
   .react-calendar__month-view__days {
     display: grid !important;
     grid-template-columns: repeat(7, 1fr);
+  }
+
+  /* Reduce calendar tile size */
+  .react-calendar {
+    width: 100%;
+  }
+
+  .react-calendar__month-view__days__day abbr {
+    font-size: 0.9em;
+  }
+
+  /* Ensure marked and current dates are still visible with smaller tiles */
+  .marked {
+    background-color: #f0d6ff;
+    border-radius: 50%;
+  }
+
+  .current {
+    background-color: #8c588c;
+    color: white;
+    border-radius: 50%;
   }
