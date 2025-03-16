@@ -113,7 +113,7 @@ const InsightLabel = styled.p`
   white-space: nowrap;
   color: #fff;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 1px;
   font-family: 'Delm Medium', sans-serif;
 `;
 
@@ -123,6 +123,14 @@ const InsightValue = styled.p`
   font-weight: bold;
   text-align: center;
   white-space: nowrap;
+`;
+
+const InsightValueForInfo = styled.p`
+  color: ${props => props.purple ? '#8c588c' : '#fff'};
+  font-size: 24px;
+  text-align: center;
+  white-space: nowrap;
+  margin-top: -0.1vh;
 `;
 
 const NavigationBar = styled.div`
@@ -208,8 +216,8 @@ const Home = () => {
 
             {/* Add Info */}
             <InsightCard>
-              <InsightLabel>Add Info ⊕</InsightLabel>
-              <InsightValue></InsightValue>
+              <InsightLabel>Add Info </InsightLabel>
+              <InsightValueForInfo>⊕</InsightValueForInfo>
             </InsightCard>
           </InsightsContainer>
         </ContentArea>
