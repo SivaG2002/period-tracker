@@ -49,6 +49,7 @@ const CalendarContainer = styled.div`
   
   /* Add these styles to reduce tile size */
   .react-calendar {
+    position:relative;
     width:100%;
     color: #8c588c;
   }
