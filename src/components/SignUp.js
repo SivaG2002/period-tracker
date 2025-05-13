@@ -1,11 +1,244 @@
-import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import styled from "styled-components";
+
+// Firebase configuration (from Login.js)
+const firebaseConfig = {
+  apiKey: "AIzaSyCVNhbhg4TJuJA-hwd-E7LuKIBgOz9E3lM",
+  authDomain: "my-kivi-app.firebaseapp.com",
+  databaseURL: "https://my-kivi-app-default-rtdb.firebaseio.com",
+  projectId: "my-kivi-app",
+  storageBucket: "my-kivi-app.firebasestorage.app",
+  messagingSenderId: "591846288701",
+  appId: "1:591846288701:web:197ce263680668ea576954",
+  measurementId: "G-QLJWR84J47",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Styled Components
+const Container = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  padding: 5vw; /* Relative padding for responsiveness */
+  width: 100%; /* 90% of viewport width */
+  max-width: 100vh; /* Cap for larger mobiles */
+  box-sizing: border-box;
+  background-color: #f5ebf6; /* Light purple background from image */
+  border-radius: 19vw; /* Rounded corners */
+  margin: 10vh auto 0; /* Center vertically with top margin */
+  height:90vh; /* Relative height */
+  margin-top: 15vh; /* Relative top margin */
+`;
+
+const NotificationBar = styled.div`
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: ${(props) => (props.isSuccess ? "#4CAF50" : "#FF5252")};
+  color: white;
+  padding: 12px 20px;
+  border-radius: 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s;
+  width: 40%;
+  max-width: 350px;
+  text-align: center;
+`;
+
+const BackLink = styled(Link)`
+margin-top: 5vh;  
+display: block;
+  margin-bottom: 15px;
+  color: #8c588c;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 5px 0;
+  font-size: 16px;
+  align-self: flex-start; // Align to the left
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const Title = styled.h2`
+  height: auto;
+  margin-bottom: 8%;
+  margin-left: 5%;
+  color: #8c588c;
+  text-align: left;
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase; // Match the uppercase style
+`;
+
+const PhoneInputContainer = styled.div`
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+`;
+
+const PhoneInput = styled.input`
+  border-radius: 50px;
+  font-weight: bold;
+  padding: 12px 15px;
+  margin: 0 auto;
+  width: 80%;
+  border: none;
+  background: white; // White background as per the image
+  font-size: 16px;
+  color: #8c588c; // Text color
+  
+  &::placeholder {
+    color: #8c588c;
+    opacity: 0.5;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(140, 88, 140, 0.3);
+  }
+`;
+
+const SubHeading = styled.h4`
+  color: #8c588c;
+  text-align: center;
+  height: auto;
+  margin: 15px 0;
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const MiniSubHeading = styled.h3`
+  color: #8c588c;
+  text-align: left
+  margin-left: 20vh;
+  height: auto;
+  font-size: 16px;
+  padding-left: 3.5vh;
+  margin-bottom: 3.5vh;
+
+`;
+
+const OtpContainer = styled.div`
+  display: flex;
+  gap: 10px; // Slightly larger gap to match the image
+  margin-bottom: 15px;
+  justify-content: center;
+
+`;
+
+const OtpInput = styled.input`
+  width: 50px; // Fixed width for square shape
+  height: 50px; // Fixed height for square shape
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  border: 2px solid #8c588c;
+  background: white; // White background as per the image
+  padding: 0;
+  font-size: 18px;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(140, 88, 140, 0.3);
+  }
+`;
+
+const VerifyButton = styled.button`
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100px;
+  margin: 0 auto 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  color: #8c588c;
+  background: white; // White background
+  border: none; // Thicker border to match the image
+  cursor: pointer;
+
+  &:hover {
+    background: #f5ebf6; // Light purple on hover
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+`;
+
+const PasswordInput = styled.input`
+  border-radius: 50px;
+  justify-content: center;
+  font-weight: bold;
+    margin: 0 auto;
+  width: 80%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border:none;
+  background: white; // White background
+  font-size: 16px;
+  color: #8c588c;
+
+
+  &::placeholder {
+    color: #8c588c;
+    opacity: 0.5;
+    
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(140, 88, 140, 0.3);
+  }
+`;
+
+const SignUpButton = styled.button`
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 19px;
+  width: 60%;
+  margin: 20px auto 0;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+  padding: 12px 0;
+  background: #8c588c;
+  color: white;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: #774777; // Slightly darker purple on hover
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+`;
 
 const SignUp = () => {
-  const [otpValues, setOtpValues] = useState(['', '', '', '', '', '']);
-  const [notification, setNotification] = useState({ show: false, message: '', isSuccess: false });
-  
+  const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
+  const [notification, setNotification] = useState({
+    show: false,
+    message: "",
+    isSuccess: false,
+  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
+
   // Declare individual refs at the top level
   const otpInputRef1 = useRef(null);
   const otpInputRef2 = useRef(null);
@@ -13,7 +246,7 @@ const SignUp = () => {
   const otpInputRef4 = useRef(null);
   const otpInputRef5 = useRef(null);
   const otpInputRef6 = useRef(null);
-  
+
   // Array of refs for easier access
   const otpInputRefs = [
     otpInputRef1,
@@ -21,20 +254,20 @@ const SignUp = () => {
     otpInputRef3,
     otpInputRef4,
     otpInputRef5,
-    otpInputRef6
+    otpInputRef6,
   ];
-  
-  const dummyPin = '123456';
+
+  const dummyPin = "123456";
 
   const handleOtpChange = (index, value) => {
     if (value && !/^\d+$/.test(value)) return;
-    
+
     const newOtpValues = [...otpValues];
-    
+
     if (value.length > 1) {
-      const digits = value.replace(/\D/g, '').slice(0, 6);
+      const digits = value.replace(/\D/g, "").slice(0, 6);
       for (let i = 0; i < 6; i++) {
-        newOtpValues[i] = digits[i] || '';
+        newOtpValues[i] = digits[i] || "";
       }
       setOtpValues(newOtpValues);
       if (digits.length < 6 && digits.length > 0) {
@@ -44,7 +277,7 @@ const SignUp = () => {
       }
       return;
     }
-    
+
     newOtpValues[index] = value;
     setOtpValues(newOtpValues);
     if (value && index < 5) {
@@ -53,113 +286,92 @@ const SignUp = () => {
   };
 
   const handleKeyDown = (index, e) => {
-    if (e.key === 'Backspace') {
-      if (index > 0 && otpValues[index] === '') {
+    if (e.key === "Backspace") {
+      if (index > 0 && otpValues[index] === "") {
         const newOtpValues = [...otpValues];
-        newOtpValues[index - 1] = '';
+        newOtpValues[index - 1] = "";
         setOtpValues(newOtpValues);
         otpInputRefs[index - 1].current.focus();
-      } else if (otpValues[index] !== '') {
+      } else if (otpValues[index] !== "") {
         const newOtpValues = [...otpValues];
-        newOtpValues[index] = '';
+        newOtpValues[index] = "";
         setOtpValues(newOtpValues);
       }
     }
   };
 
-  const otpCode = otpValues.join('');
+  const otpCode = otpValues.join("");
 
   const showNotification = (message, isSuccess) => {
     setNotification({ show: true, message, isSuccess });
     setTimeout(() => {
-      setNotification({ show: false, message: '', isSuccess: false });
+      setNotification({ show: false, message: "", isSuccess: false });
     }, 3000);
   };
 
   const verifyOtp = () => {
     if (otpCode === dummyPin) {
-      showNotification('Successful ✓', true);
+      showNotification("Successful ✓", true);
     } else {
-      showNotification('Enter valid code', false);
+      showNotification("Enter valid code", false);
+    }
+  };
+
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      showNotification("Passwords do not match", false);
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      showNotification("Sign up successful ✓", true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    } catch (error) {
+      showNotification(error.message, false);
+      console.error("Sign up error:", error.message);
     }
   };
 
   return (
-    <motion.div 
-      className="auth-container"
+    <Container
       initial={{ x: 400 }}
       animate={{ x: 0 }}
       exit={{ x: -400 }}
-      transition={{ duration: 1, ease: "easeInOut", stiffness: 300 }}
+      transition={{ duration: 0.8, ease: "easeInOut", stiffness: 300 }}
     >
       {notification.show && (
-        <div style={{
-          position: 'fixed',
-          top: '20px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          backgroundColor: notification.isSuccess ? '#4CAF50' : '#FF5252',
-          color: 'white',
-          padding: '10px 20px',
-          borderRadius: '20px',
-          zIndex: 1000,
-          boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
-          animation: 'fadeIn 0.3s'
-        }}>
+        <NotificationBar isSuccess={notification.isSuccess}>
           {notification.message}
-        </div>
+        </NotificationBar>
       )}
+
       <motion.div whileTap={{ scale: 0.97 }}>
-        <Link 
-          to="/login" 
-          className="back-link" 
-          style={{ display: 'block', marginBottom: '10px', color: '#8c588c', fontWeight: 'bold' }}
-        >
-          ⇐ Back to login
-        </Link>
+        <BackLink to="/login">⇐ Back to login</BackLink>
       </motion.div>
-      <h2 className="sign_up_h2" style={{height:'1%', marginBottom:'8%', color:'#8c588c'}}>SIGN UP</h2>
-      <div style={{ position: 'relative', marginBottom: '-10px' }}>
-        <input type="tel" placeholder="Phone Number" className="rounded-input-ph" style={{ 
-          borderRadius: '50px', 
-          fontWeight: 'bold',
-          paddingRight: '40px',
-          width: 'calc(100% - 40px)' 
-        }} />
-        <button 
+
+      <Title>SIGN UP</Title>
+
+      <PhoneInputContainer>
+        <div
           style={{
-            position: 'absolute',
-            right: '1px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            background: '#8c588c',
-            color: 'white',
-            borderRadius: '50%',
-            width: '30px',
-            height: '30px',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer'
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          →
-        </button>
-      </div>
-      <h4 className='phonenumber' style={{color: '#8c588c',textAlign:'center',display:'flow',height:'1%'}}>Check Your Phone</h4>
-      <div
-        className="otp-container"
-        style={{
-          display: 'flex',
-          gap: '4px',
-          marginBottom: '8px',
-          marginTop: '1px',
-          justifyContent: 'center'
-        }}
-      >
+          <PhoneInput type="tel" placeholder="Phone Number" />
+          <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+        </div>
+      </PhoneInputContainer>
+
+      <SubHeading>Check Your Phone</SubHeading>
+
+      <OtpContainer>
         {otpValues.map((value, index) => (
-          <input
+          <OtpInput
             key={index}
             ref={otpInputRefs[index]}
             type="text"
@@ -169,51 +381,68 @@ const SignUp = () => {
             onKeyDown={(e) => handleKeyDown(index, e)}
             onPaste={(e) => {
               e.preventDefault();
-              const pastedData = e.clipboardData.getData('text');
+              const pastedData = e.clipboardData.getData("text");
               handleOtpChange(index, pastedData);
-            }}
-            className="otp-input"
-            style={{
-              width: '10%',
-              textAlign: 'center',
-              borderRadius: '10px',
-              fontWeight: 'bold',
-              border: '1px solid #8c588c',
-              borderWidth: '2px',
-              background: '#f5ebf6',
             }}
           />
         ))}
-      </div>
-      <button 
-        className="primary-btn" 
-        style={{ 
-          borderRadius: '50px', 
-          fontWeight: 'bold', 
-          fontSize: '18px', 
-          width: '20%', 
-          marginLeft: '38%', 
-          textAlign: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 'auto',
-          padding: '8px 0',
-          textDecoration: 'none',
-          height:'4%',
-          color:'#8c588c',
-          background:'white',
-          border: '1px solid #8c588c',
-          cursor: 'pointer'
-        }} 
-        onClick={verifyOtp}
+      </OtpContainer>
+
+      <VerifyButton onClick={verifyOtp}>Verify</VerifyButton>
+      <MiniSubHeading>Check Your Phone</MiniSubHeading>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        Verify
-      </button>
-      <input type="password" placeholder="Password" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold' }} />
-      <input type="password" placeholder="Confirm Password" className="rounded-input" style={{ borderRadius: '50px', fontWeight: 'bold' }} />
-      <Link to="/signup" className="primary-btn rounded-btn" style={{ borderRadius: '50px', fontWeight: 'bold', fontSize: '19px', width: '60%', marginLeft: '55px', textAlign: 'center', display: 'block', textDecoration: 'none' }}>Sign Up</Link>
-    </motion.div>
+        <PasswordInput
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+       
+
+        <PasswordInput
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <PasswordInput
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+      </div>
+
+     
+
+      <SignUpButton onClick={handleSignUp}>Sign Up</SignUpButton>
+    </Container>
   );
 };
 
